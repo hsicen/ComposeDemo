@@ -4,6 +4,8 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.MaterialTheme
@@ -12,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
@@ -51,6 +54,7 @@ fun NewStory() {
                 modifier = Modifier
                     .height(180.dp)
                     .fillMaxWidth()
+                    .clickable(onClick = {})
                     .clip(shape = RoundedCornerShape(8.dp)),
                 contentScale = ContentScale.Crop
             )
@@ -66,6 +70,52 @@ fun NewStory() {
             Text(text = "汗滴禾下土", style = typography.body2)
             Text(text = "谁知盘中餐", style = typography.body2)
             Text(text = "粒粒皆辛苦", style = typography.body2)
+
+            Text(
+                "Hello World",
+                modifier = Modifier
+                    .background(Color.Green)
+                    .padding(20.dp)
+            )
+
+            Box(
+                Modifier
+                    .background(Color.Blue)
+                    .size(50.dp)
+                    .padding(10.dp)
+            ) {
+                Box(
+                    Modifier
+                        .background(Color.Gray)
+                        .fillMaxSize()
+                )
+            }
+
+            Box {
+                Spacer(
+                    Modifier
+                        .matchParentSize()
+                        .background(Color.Green)
+                )
+                Text(
+                    text = "Hello Compose",
+                    Modifier.paddingFromBaseline(top = 32.dp)
+                )
+            }
+
+            //offset
+            Box(
+                Modifier
+                    .background(Color.Yellow)
+                    .size(150.dp, 70.dp)
+            ) {
+                Text(
+                    text = "Layout offset modifier sample",
+                    Modifier.offset(16.dp, 12.dp)
+                )
+            }
+
+
         }
     }
 }
