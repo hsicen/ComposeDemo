@@ -1,6 +1,7 @@
 package com.hsicen.composedemo
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
@@ -8,21 +9,28 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Button
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.foundation.text.ClickableText
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.DialogProperties
 import androidx.constraintlayout.compose.ConstraintLayout
-import com.hsicen.composedemo.ui.theme.ComposeDemoTheme
 
 /**
  * 作者：hsicen  7/28/21 14:40
@@ -34,7 +42,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            ComposeDemoTheme {
+            MaterialTheme {
                 NewStory()
             }
         }
@@ -45,17 +53,13 @@ class MainActivity : ComponentActivity() {
 fun NewStory() {
     MaterialTheme {
         Column(
-            modifier = Modifier.padding(16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Bottom,
+            modifier = Modifier
+                .padding(16.dp)
+                .fillMaxSize()
         ) {
-            Poetic()
-            Padding()
-            BaseLine()
-            Offset()
-            FixedSize()
-            Weight()
-            Constrain()
-            ItemConstrain()
+            UserPrivate()
         }
     }
 }
@@ -63,13 +67,18 @@ fun NewStory() {
 @Composable
 fun Poetic() {
     val typography = MaterialTheme.typography
+    val context = LocalContext.current
     Image(
         painter = painterResource(id = R.drawable.header),
         contentDescription = "",
         modifier = Modifier
             .height(180.dp)
             .fillMaxWidth()
-            .clickable(onClick = {})
+            .clickable(onClick = {
+                Toast
+                    .makeText(context, "Dont push me so far !", Toast.LENGTH_SHORT)
+                    .show()
+            })
             .clip(shape = RoundedCornerShape(8.dp)),
         contentScale = ContentScale.Crop
     )
@@ -199,7 +208,54 @@ fun ItemConstrain() {
     }
 }
 
-@Preview(showBackground = true)
+
+@Composable
+fun UserPrivate() {
+    val dialogState = remember { mutableStateOf(false) }
+
+    if (dialogState.value) {
+        AlertDialog(
+            onDismissRequest = {
+                dialogState.value = false
+            },
+            title = {
+                Text(text = "用户协议", fontSize = 24.sp, style = MaterialTheme.typography.h1)
+            }, text = {
+                Text(text = "这个是用户协议内容，你看到我的这段话的时候，说明你的弹窗已经出现，现在可以进行下一个联系了！")
+            }, confirmButton = {
+                TextButton(onClick = {
+                    dialogState.value = false
+                }) { Text(text = "确认") }
+            }, dismissButton = {
+                TextButton(onClick = {
+                    dialogState.value = false
+                }) { Text(text = "取消") }
+            }, properties = DialogProperties(dismissOnClickOutside = false)
+        )
+    }
+
+    val text = buildAnnotatedString {
+        append("勾选即代表同意")
+        pushStringAnnotation("privaceTag", "privace")
+        withStyle(
+            style = SpanStyle(
+                color = Color.Blue,
+                fontWeight = FontWeight.Bold
+            )
+        ) {
+            append("用户协议")
+        }
+        pop()
+    }
+
+    ClickableText(text = text, onClick = {
+        text.getStringAnnotations("privaceTag", it, it).firstOrNull()?.let {
+            dialogState.value = true
+        }
+    })
+}
+
+@Preview(showSystemUi = true)
 @Composable
 fun DefaultPreview() {
     NewStory()
