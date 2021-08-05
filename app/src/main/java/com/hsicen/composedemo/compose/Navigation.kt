@@ -11,10 +11,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Settings
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -32,7 +29,7 @@ import androidx.compose.ui.unit.dp
 @ExperimentalAnimationApi
 @Composable
 fun SimpleNavigation() {
-    val selectItem = remember { mutableStateOf(0) }
+    val selectItem by remember { mutableStateOf(0) }
     val items = listOf("主页", "我喜欢的", "设置")
 
     Scaffold(
@@ -40,7 +37,7 @@ fun SimpleNavigation() {
             TopAppBar(
                 title = {
                     Text(
-                        text = items[selectItem.value],
+                        text = items[selectItem],
                         textAlign = TextAlign.Center,
                         modifier = Modifier.fillMaxWidth()
                     )
