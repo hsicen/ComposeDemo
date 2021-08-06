@@ -199,6 +199,7 @@ fun StageContent(modifier: Modifier = Modifier) {
     }
 }
 
+
 @Preview(showSystemUi = true)
 @Composable
 fun LayoutPreview() {

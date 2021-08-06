@@ -6,7 +6,10 @@ import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
-import com.hsicen.composedemo.compose.Conversation
+import androidx.compose.material.Surface
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
+import com.hsicen.composedemo.compose.PhotographerCaard
 
 /**
  * 作者：hsicen  7/28/21 14:40
@@ -22,8 +25,17 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            MaterialTheme {
-                Conversation(msgs = viewmodel.provideMsg())
+            MyApp {
+                PhotographerCaard()
+            }
+        }
+    }
+
+    @Composable
+    fun MyApp(content: @Composable () -> Unit) {
+        MaterialTheme {
+            Surface(color = Color.Yellow) {
+                content()
             }
         }
     }
