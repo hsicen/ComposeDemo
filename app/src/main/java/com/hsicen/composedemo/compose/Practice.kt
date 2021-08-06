@@ -1,14 +1,14 @@
 package com.hsicen.composedemo.compose
 
 import android.widget.Toast
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -28,6 +28,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.DialogProperties
 import androidx.constraintlayout.compose.ConstraintLayout
+import coil.compose.rememberImagePainter
 import com.hsicen.composedemo.R
 
 /**
@@ -196,7 +197,6 @@ fun ItemConstrain() {
     }
 }
 
-
 @Composable
 fun UserPrivate() {
     val dialogState = remember { mutableStateOf(false) }
@@ -243,8 +243,59 @@ fun UserPrivate() {
     })
 }
 
+
+@Composable
+fun ArtCard() {
+    Row(modifier = Modifier
+        .fillMaxWidth()
+        .wrapContentHeight()
+        .padding(8.dp)
+        .clip(RoundedCornerShape(4.dp))
+        .background(MaterialTheme.colors.surface)
+        .clickable {}
+        .padding(16.dp)) {
+        Surface(
+            modifier = Modifier.size(50.dp),
+            shape = CircleShape,
+            color = MaterialTheme.colors.onSurface.copy(alpha = 0.2f)
+        ) {
+            // Image goes here
+            Image(
+                painter = rememberImagePainter(
+                    data = "https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fpayposter.com%2Fposter_preview%2F1920x1200-hd-48710014.jpg"
+                ),
+                contentDescription = "Android Logo",
+                modifier = Modifier.size(50.dp),
+                contentScale = ContentScale.Crop
+            )
+        }
+
+        Column(
+            modifier = Modifier
+                .padding(start = 8.dp)
+                .align(Alignment.CenterVertically)
+        ) {
+            Text("hsicen", fontWeight = FontWeight.Bold)
+            CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
+                Text("3 minutes ago", style = MaterialTheme.typography.body2)
+            }
+        }
+    }
+}
+
+@Composable
+fun ArtList() {
+    val scrollState = rememberScrollState()
+    Column(Modifier.verticalScroll(scrollState)) {
+        repeat(50) {
+            ArtCard()
+        }
+    }
+}
+
+
 @Preview(showSystemUi = true)
 @Composable
 fun DefaultPreview() {
-    NewStory()
+    ArtList()
 }

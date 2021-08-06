@@ -3,9 +3,10 @@ package com.hsicen.composedemo
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
-import com.hsicen.composedemo.compose.BodyContent
+import com.hsicen.composedemo.compose.Conversation
 
 /**
  * 作者：hsicen  7/28/21 14:40
@@ -16,11 +17,13 @@ import com.hsicen.composedemo.compose.BodyContent
 
 @ExperimentalMaterialApi
 class MainActivity : ComponentActivity() {
+    private val viewmodel by viewModels<MainViewModel>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             MaterialTheme {
-                BodyContent()
+                Conversation(msgs = viewmodel.provideMsg())
             }
         }
     }
