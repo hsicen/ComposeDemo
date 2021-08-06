@@ -52,7 +52,7 @@ fun KColumn(
 }
 
 @Composable
-fun BodyContent() {
+fun BodyContent1() {
     /* KColumn(modifier = Modifier.padding(8.dp)) {
          repeat(10) {
              Text(text = "My Own Colum")

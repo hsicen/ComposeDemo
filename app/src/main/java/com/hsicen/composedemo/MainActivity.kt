@@ -9,7 +9,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
-import com.hsicen.composedemo.compose.PhotographerCaard
+import com.hsicen.composedemo.compose.ImageList
 
 /**
  * 作者：hsicen  7/28/21 14:40
@@ -26,7 +26,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             MyApp {
-                PhotographerCaard()
+                ImageList()
             }
         }
     }
