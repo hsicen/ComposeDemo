@@ -27,7 +27,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.DialogProperties
-import androidx.constraintlayout.compose.ConstraintLayout
 import coil.compose.rememberImagePainter
 import com.hsicen.composedemo.R
 
@@ -177,23 +176,6 @@ fun Weight() {
 fun Constrain() {
     BoxWithConstraints {
         Text("My height[$minHeight,$maxHeight] and width[$minWidth,$maxWidth]")
-    }
-}
-
-@Composable
-fun ItemConstrain() {
-    ConstraintLayout {
-        val (button, text) = createRefs()
-
-        Button(onClick = {}, modifier = Modifier.constrainAs(button) {
-            top.linkTo(parent.top, margin = 16.dp)
-        }) {
-            Text(text = "Button")
-        }
-
-        Text(text = "Text", Modifier.constrainAs(text) {
-            top.linkTo(button.bottom, margin = 16.dp)
-        })
     }
 }
 

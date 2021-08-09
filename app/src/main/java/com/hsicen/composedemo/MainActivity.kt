@@ -8,8 +8,11 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.graphics.Color
-import com.hsicen.composedemo.compose.ImageList
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
+import com.hsicen.composedemo.todo.TodoItem
+import com.hsicen.composedemo.todo.TodoScreen
+import com.hsicen.composedemo.todo.TodoViewModel
 
 /**
  * 作者：hsicen  7/28/21 14:40
@@ -21,12 +24,13 @@ import com.hsicen.composedemo.compose.ImageList
 @ExperimentalMaterialApi
 class MainActivity : ComponentActivity() {
     private val viewmodel by viewModels<MainViewModel>()
+    private val todoViewModel by viewModels<TodoViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             MyApp {
-                ImageList()
+                TodoActivityScreen(todoViewModel)
             }
         }
     }
@@ -34,9 +38,21 @@ class MainActivity : ComponentActivity() {
     @Composable
     fun MyApp(content: @Composable () -> Unit) {
         MaterialTheme {
-            Surface(color = Color.Yellow) {
+            Surface {
                 content()
             }
         }
     }
+}
+
+@Composable
+private fun TodoActivityScreen(todoViewModel: TodoViewModel) {
+    val items: List<TodoItem> by todoViewModel.todoItems.observeAsState(listOf())
+
+    TodoScreen(items = items,
+        onAddItem = {
+            todoViewModel.addItem(it)
+        }, onRemoveItem = {
+            todoViewModel.removeItem(it)
+        })
 }

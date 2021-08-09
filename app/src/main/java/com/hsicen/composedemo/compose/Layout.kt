@@ -4,8 +4,8 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
@@ -13,7 +13,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clipToBounds
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.AlignmentLine
 import androidx.compose.ui.layout.FirstBaseline
@@ -53,25 +53,9 @@ fun KColumn(
 
 @Composable
 fun BodyContent1() {
-    /* KColumn(modifier = Modifier.padding(8.dp)) {
-         repeat(10) {
-             Text(text = "My Own Colum")
-         }
-     }*/
-
-    LazyColumn(
-        modifier = Modifier
-            .padding(16.dp)
-            .clipToBounds()
-    ) {
-        item {
-            repeat(30) {
-                Text(text = "My Own Colum")
-                Text(text = "My Own Colum")
-                Text(text = "My Own Colum")
-                Text(text = "My Own Colum")
-                Text(text = "My Own Colum")
-            }
+    KColumn(modifier = Modifier.padding(8.dp)) {
+        repeat(10) {
+            Text(text = "My Own Colum")
         }
     }
 }
@@ -116,9 +100,12 @@ fun StageGrid(
     content: @Composable () -> Unit
 ) {
     Layout(content = content, modifier) { measurables, constraints ->
+        // keep the width of each row
         val rowWidths = IntArray(rows) { 0 }
+        // keep the  max height of each row
         val rowHeights = IntArray(rows) { 0 }
 
+        // measure child and keep it's width and height
         val placeables = measurables.mapIndexed { index, measurable ->
             val placeable = measurable.measure(constraints)
             val row = index % rows
@@ -128,18 +115,22 @@ fun StageGrid(
             placeable
         }
 
+        // Keep the width of the layout
         val width = rowWidths.maxOrNull()
             ?.coerceIn(constraints.minWidth.rangeTo(constraints.maxWidth))
             ?: constraints.minWidth
 
+        // keep the height of the layout
         val height = rowHeights.sumOf { it }
             .coerceIn(constraints.minHeight.rangeTo(constraints.maxHeight))
 
+        // keep the y position of each row
         val rowY = IntArray(rows) { 0 }
         for (i in 1 until rows) {
             rowY[i] = rowY[i - 1] + rowHeights[i - 1]
         }
 
+        // position each item in the layout
         layout(width, height) {
             val rowX = IntArray(rows) { 0 }
             placeables.forEachIndexed { index, placeable ->
@@ -163,7 +154,7 @@ fun Chip(
 ) {
     Card(
         modifier = modifier,
-        border = BorderStroke(color = Color.Black, width = Dp.Hairline),
+        border = BorderStroke(color = Color.Black, width = 1.dp),
         shape = RoundedCornerShape(8.dp)
     ) {
         Row(
@@ -172,6 +163,7 @@ fun Chip(
         ) {
             Box(
                 modifier = Modifier
+                    .clip(CircleShape)
                     .size(16.dp, 16.dp)
                     .background(MaterialTheme.colors.secondary)
             )
@@ -191,7 +183,7 @@ val topics = listOf(
 @Composable
 fun StageContent(modifier: Modifier = Modifier) {
     Row(modifier = modifier.horizontalScroll(rememberScrollState())) {
-        StageGrid(modifier = modifier, rows = 5) {
+        StageGrid(modifier = modifier, rows = 3) {
             for (topic in topics) {
                 Chip(modifier = Modifier.padding(8.dp), text = topic)
             }
