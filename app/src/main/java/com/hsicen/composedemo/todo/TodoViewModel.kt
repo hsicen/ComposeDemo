@@ -14,9 +14,6 @@ import androidx.lifecycle.ViewModel
  */
 class TodoViewModel : ViewModel() {
 
-    //private var _todoItems = MutableLiveData(listOf<TodoItem>())
-    //val todoItems: LiveData<List<TodoItem>> = _todoItems
-
     private var currentEditPosition by mutableStateOf(-1)
     val currentEditItem: TodoItem?
         get() = todoItems.getOrNull(currentEditPosition)
