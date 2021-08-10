@@ -8,9 +8,6 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
-import com.hsicen.composedemo.todo.TodoItem
 import com.hsicen.composedemo.todo.TodoScreen
 import com.hsicen.composedemo.todo.TodoViewModel
 
@@ -47,12 +44,13 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 private fun TodoActivityScreen(todoViewModel: TodoViewModel) {
-    val items: List<TodoItem> by todoViewModel.todoItems.observeAsState(listOf())
-
-    TodoScreen(items = items,
-        onAddItem = {
-            todoViewModel.addItem(it)
-        }, onRemoveItem = {
-            todoViewModel.removeItem(it)
-        })
+    TodoScreen(
+        items = todoViewModel.todoItems,
+        editItem = todoViewModel.currentEditItem,
+        onAddItem = todoViewModel::addItem,
+        onRemoveItem = todoViewModel::removeItem,
+        onEditStart = todoViewModel::onEditItemSelected,
+        onEditChange = todoViewModel::onEditItemChange,
+        onEditDone = todoViewModel::onEditDone
+    )
 }
