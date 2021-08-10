@@ -175,7 +175,7 @@ fun PostItem(
 ) {
     ListItem(
         modifier = modifier
-            .clickable { /* todo */ }
+            .clickable {}
             .padding(vertical = 8.dp),
         icon = {
             Image(
