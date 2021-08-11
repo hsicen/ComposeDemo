@@ -10,3 +10,4 @@ rootProject.name = "ComposeDemo"
 include(":app")
 include(":theme")
 include(":animation")
+include(":navigation")
